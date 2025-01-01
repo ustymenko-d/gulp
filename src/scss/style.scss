@@ -1,2 +1,12 @@
 @use 'reset';
 // @import 'fonts';
+
+// webP support check for css background-image
+// html {
+// 	@supports (
+// 		background-image:
+// 			url('data:image/webp;base64,UklGRhYAAABXRUJQVlA4TBEAAAAAAABAAEAAQAAAABAAEAAQAAABAAEAAQAAAAA=')
+// 	) {
+// 		background-image: url();
+// 	}
+// }
