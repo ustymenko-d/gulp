@@ -64,15 +64,16 @@ export const generateFontStyles = () => {
 				let loggedFonts = new Set()
 
 				fontFiles.forEach((file) => {
-					const [fontName, fontWeightRaw] = file.split('.')[0].split('-')
+					const baseName = file.split('.')[0]
+					const [fontName, fontWeightRaw] = baseName.split('-')
 					const fontWeight = getFontWeight(fontWeightRaw || 'regular')
 
-					if (!loggedFonts.has(file)) {
+					if (!loggedFonts.has(baseName)) {
 						fs.appendFileSync(
 							fontsFile,
-							`@font-face {\n\tfont-family: ${fontName};\n\tfont-display: swap;\n\tsrc: url("../fonts/${file}.woff2") format("woff2"), url("../fonts/${file}.woff") format("woff");\n\tfont-weight: ${fontWeight};\n\tfont-style: normal;\n}\r\n`
+							`@font-face {\n\tfont-family: ${fontName};\n\tfont-display: swap;\n\tsrc: url("../fonts/${baseName}.woff2") format("woff2"), url("../fonts/${baseName}.woff") format("woff");\n\tfont-weight: ${fontWeight};\n\tfont-style: normal;\n}\r\n`
 						)
-						loggedFonts.add(file)
+						loggedFonts.add(baseName)
 					}
 				})
 			} else {
