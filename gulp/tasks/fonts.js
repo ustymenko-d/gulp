@@ -2,6 +2,12 @@ import fs from 'fs';
 import fonter from 'gulp-fonter';
 import ttf2woff2 from 'gulp-ttf2woff2';
 
+export const copyWoffAndWoff2 = () => {
+	return app.gulp
+		.src(`${app.path.srcFolder}/fonts/*.{woff,woff2}`, {})
+		.pipe(app.gulp.dest(`${app.path.build.fonts}`));
+};
+
 export const otfToTtf = () => {
 	return app.gulp
 		.src(`${app.path.srcFolder}/fonts/*.otf`, {})
