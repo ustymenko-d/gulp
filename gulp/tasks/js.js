@@ -1,6 +1,6 @@
-import webpack from 'webpack-stream';
-import rename from 'gulp-rename';
-import uglify from 'gulp-uglify';
+import webpack from 'webpack-stream'
+import rename from 'gulp-rename'
+import uglify from 'gulp-uglify'
 
 export const js = () => {
 	return app.gulp
@@ -29,5 +29,5 @@ export const js = () => {
 			})
 		)
 		.pipe(app.gulp.dest(app.path.build.js))
-		.pipe(app.plugins.browsersync.stream());
-};
+		.pipe(app.plugins.browsersync.stream())
+}

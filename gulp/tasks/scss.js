@@ -2,7 +2,6 @@ import dartSass from 'sass';
 import gulpSass from 'gulp-sass';
 import rename from 'gulp-rename';
 
-// import webpcss from 'gulp-webpcss';
 import cleanCss from 'gulp-clean-css';
 import autoprefixer from 'gulp-autoprefixer';
 import groupCssMediaQueries from 'gulp-group-css-media-queries';
@@ -17,14 +16,7 @@ export const scss = () => {
 				outputStyle: 'expanded',
 			})
 		)
-		// .pipe(app.plugins.replace(/@img\//g, '../img/'))
 		.pipe(groupCssMediaQueries())
-		// .pipe(
-		// 	webpcss({
-		// 		webpClass: '.webp',
-		// 		noWebpClass: '.no-webp',
-		// 	})
-		// )
 		.pipe(
 			autoprefixer({
 				overrideBrowserslist: ['last 3 versions'],
