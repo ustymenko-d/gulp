@@ -1,85 +1,118 @@
 import fs from 'fs'
 import fonter from 'gulp-fonter'
+import rename from 'gulp-rename'
 import ttf2woff2 from 'gulp-ttf2woff2'
 
-export const copyWoffAndWoff2 = () => {
-	return app.gulp
-		.src(`${app.path.srcFolder}/fonts/*.{woff,woff2}`, {})
-		.pipe(app.gulp.dest(`${app.path.build.fonts}`))
+const removeFontsPrefix = (fontPath) => {
+	return fontPath.replace(/^fonts[\\/]/, '')
 }
 
-export const otfToTtf = () => {
-	return app.gulp
-		.src(`${app.path.srcFolder}/fonts/*.otf`, {})
+export const convertToTtf = () =>
+	app.gulp
+		.src(`${app.path.src.fonts}*.otf`)
 		.pipe(
 			fonter({
 				formats: ['ttf'],
 			})
 		)
-		.pipe(app.gulp.dest(`${app.path.srcFolder}/fonts/`))
-}
+		.pipe(
+			rename((path) => {
+				path.dirname = '.'
+				path.basename = removeFontsPrefix(path.basename)
+			})
+		)
+		.pipe(app.gulp.dest(`${app.path.src.fonts}`))
 
-export const ttfToWoff = () => {
-	return app.gulp
-		.src(`${app.path.srcFolder}/fonts/*.ttf`, {})
+export const convertToWoff = () =>
+	app.gulp
+		.src(`${app.path.src.fonts}*.ttf`)
 		.pipe(
 			fonter({
 				formats: ['woff'],
 			})
 		)
-		.pipe(app.gulp.dest(`${app.path.build.fonts}`))
-		.pipe(app.gulp.src(`${app.path.srcFolder}/fonts/*.ttf`))
+		.pipe(
+			rename((path) => {
+				path.dirname = '.'
+				path.basename = removeFontsPrefix(path.basename)
+			})
+		)
+		.pipe(app.gulp.dest(`${app.path.src.fonts}`))
+		.pipe(app.gulp.src(`${app.path.src.fonts}*.ttf`))
 		.pipe(ttf2woff2())
+		.pipe(app.gulp.dest(`${app.path.src.fonts}`))
+
+export const copyWoffAndWoff2 = () =>
+	app.gulp
+		.src(`${app.path.src.fonts}*.{woff,woff2}`)
 		.pipe(app.gulp.dest(`${app.path.build.fonts}`))
-}
 
 export const generateFontStyles = () => {
-	let fontsFile = `${app.path.srcFolder}/scss/fonts.scss`
+	let fontsStylesFile = `${app.path.srcFolder}/scss/fonts.scss`
 
-	const getFontWeight = (weight) => {
-		const weightMap = {
-			thin: 100,
-			extralight: 200,
-			light: 300,
-			regular: 400,
-			medium: 500,
-			semibold: 600,
-			bold: 700,
-			extrabold: 800,
-			black: 900,
-		}
-		return weightMap[weight.toLowerCase()] || 400
+	const fontWeightMapping = {
+		thin: 100,
+		extralight: 200,
+		light: 300,
+		medium: 500,
+		semibold: 600,
+		bold: 700,
+		extrabold: 800,
+		heavy: 800,
+		black: 900,
 	}
 
-	fs.readdir(app.path.build.fonts, function (error, fontFiles) {
+	const getFontWeight = (fontFileName) => {
+		const sortedKeys = Object.keys(fontWeightMapping).sort(
+			(a, b) => b.length - a.length
+		)
+
+		const weightKey = sortedKeys.find((key) =>
+			fontFileName.toLowerCase().includes(key)
+		)
+
+		return weightKey ? fontWeightMapping[weightKey] : 400
+	}
+
+	const writeFontFace = (fontName, fontFileName, fontWeight) => {
+		const fontFace = `@font-face {
+				font-family: '${fontName}';
+				font-display: swap;
+				src: url("../fonts/${fontFileName}.woff2") format("woff2"), url("../fonts/${fontFileName}.woff") format("woff");
+				font-weight: ${fontWeight};
+				font-style: normal;
+		}\r\n`
+		fs.appendFile(fontsStylesFile, fontFace, () => {})
+	}
+
+	fs.readdir(app.path.build.fonts, (error, fontsFiles) => {
 		if (error) {
-			console.error('Error reading font files:', error)
-			done(error)
+			console.error('Error reading fonts directory:', error)
 			return
 		}
 
-		if (fontFiles) {
-			if (!fs.existsSync(fontsFile)) {
-				fs.writeFileSync(fontsFile, '')
-				let loggedFonts = new Set()
+		if (fontsFiles && fontsFiles.length > 0) {
+			if (!fs.existsSync(fontsStylesFile)) {
+				fs.writeFileSync(fontsStylesFile, '')
 
-				fontFiles.forEach((file) => {
-					const baseName = file.split('.')[0]
-					const [fontName, fontWeightRaw] = baseName.split('-')
-					const fontWeight = getFontWeight(fontWeightRaw || 'regular')
+				let processedFonts = new Set()
 
-					if (!loggedFonts.has(baseName)) {
-						fs.appendFileSync(
-							fontsFile,
-							`@font-face {\n\tfont-family: ${fontName};\n\tfont-display: swap;\n\tsrc: url("../fonts/${baseName}.woff2") format("woff2"), url("../fonts/${baseName}.woff") format("woff");\n\tfont-weight: ${fontWeight};\n\tfont-style: normal;\n}\r\n`
-						)
-						loggedFonts.add(baseName)
+				fontsFiles.forEach((file) => {
+					const fontFileName = file.split('.')[0]
+
+					if (!processedFonts.has(fontFileName)) {
+						const fontWeight = getFontWeight(fontFileName)
+						writeFontFace(fontFileName, fontFileName, fontWeight)
+						processedFonts.add(fontFileName)
 					}
 				})
 			} else {
-				console.log('scss/fonts.scss already exists. Delete it to regenerate.')
+				console.log(
+					'The scss/fonts.scss file already exists. Delete it to regenerate.'
+				)
 			}
 		}
 	})
+
 	return app.gulp.src(`${app.path.srcFolder}`)
 }
