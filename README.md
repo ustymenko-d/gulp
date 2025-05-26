@@ -42,5 +42,5 @@ gulp
 This command will launch a local server, watch for file changes, and automatically reload the browser. To generate the final production build and package it into a .zip archive, use:
 
 ```bash
-npm run zip
+gulp zip
 ```
