@@ -4,10 +4,12 @@ export const js = () => {
 	const src = app.path.src.js
 	const dest = app.path.build.js
 
-	const copyJs = app.gulp.src(src).pipe(app.gulp.dest(dest))
+	const copyJs = app.gulp
+		.src(src, { allowEmpty: true })
+		.pipe(app.gulp.dest(dest))
 
 	const buildJs = app.gulp
-		.src(src)
+		.src(src, { allowEmpty: true })
 		.pipe(
 			webpack({
 				mode: 'production',
