@@ -1,17 +1,10 @@
-* {
-	padding: 0;
-	margin: 0;
-	border: 0;
-	-moz-box-sizing: border-box;
-	-webkit-box-sizing: border-box;
+*,
+*::before,
+*::after {
 	box-sizing: border-box;
-
-	&:before,
-	&:after {
-		-moz-box-sizing: border-box;
-		-webkit-box-sizing: border-box;
-		box-sizing: border-box;
-	}
+	margin: 0;
+	padding: 0;
+	border: 0;
 }
 
 :focus,
@@ -19,11 +12,12 @@
 	outline: none;
 }
 
-a {
-	&:focus,
-	&:active {
-		outline: none;
-	}
+html,
+body {
+	height: 100%;
+	line-height: 1;
+	font-size: 100%;
+	scroll-behavior: smooth;
 }
 
 nav,
@@ -33,25 +27,27 @@ aside {
 	display: block;
 }
 
-html,
-body {
-	height: 100%;
-	width: 100%;
-	font-size: 100%;
-	line-height: 1;
-	-ms-text-size-adjust: 100%;
-	-moz-text-size-adjust: 100%;
-	-webkit-text-size-adjust: 100%;
+img,
+picture,
+video,
+canvas,
+svg {
+	display: block;
+	max-width: 100%;
 }
 
 input,
 button,
 textarea {
-	font-family: inherit;
+	font: inherit;
 }
 
 input::-ms-clear {
 	display: none;
+}
+
+textarea:not([rows]) {
+	min-height: 10em;
 }
 
 button {
@@ -65,10 +61,23 @@ button {
 
 a {
 	text-decoration: none;
+	color: inherit;
 
+	&:focus,
+	&:active {
+		outline: none;
+	}
+
+	&:focus,
+	&:active,
 	&:visited,
 	&:hover {
 		text-decoration: none;
+	}
+
+	&:not([class]) {
+		text-decoration-skip-ink: auto;
+		color: currentColor;
 	}
 }
 
@@ -88,6 +97,7 @@ h5,
 h6 {
 	font-size: inherit;
 	font-weight: 400;
+	text-wrap: balance;
 }
 
 details > summary {
