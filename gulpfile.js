@@ -38,8 +38,5 @@ const mainTasks = gulp.series(
 const dev = gulp.series(reset, mainTasks, gulp.parallel(watcher, server))
 const deployZIP = gulp.series(reset, mainTasks, zip)
 
-// gulp.task('default', dev)
-// gulp.task('zip', deployZIP)
-
 export default dev
 export { deployZIP as zip }
