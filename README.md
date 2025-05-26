@@ -1,4 +1,4 @@
-# Gulp Starter Pack
+# Gulp setup
 
 This is a pre-configured Gulp setup for web projects. It includes automation tools for compiling Pug, SCSS, optimizing images, live browser reloading, and more.
 
