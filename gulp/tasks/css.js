@@ -18,7 +18,6 @@ export const css = () =>
 		.pipe(
 			autoprefixer({
 				overrideBrowserslist: ['last 3 versions'],
-				grid: 'autoplace',
 				cascade: true,
 			})
 		)
