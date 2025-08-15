@@ -1,16 +1,16 @@
 import { copy } from './copy.js'
 import { html } from './html.js'
+import { styles } from './styles.js'
+import { scripts } from './scripts.js'
 import { images } from './images.js'
-import { js } from './js.js'
-import { css } from './css.js'
 
 export const watcher = () => {
 	const { watch } = app.gulp
-	const { path } = app
+	const { watch: watchPaths } = app.paths
 
-	watch(path.watch.files, copy)
-	watch(path.watch.html, html)
-	watch(path.watch.css, css)
-	watch(path.watch.js, js)
-	watch(path.watch.images, images)
+	watch(watchPaths.files, copy)
+	watch(watchPaths.html, html)
+	watch(watchPaths.styles, styles)
+	watch(watchPaths.scripts, scripts)
+	watch(watchPaths.images, images)
 }

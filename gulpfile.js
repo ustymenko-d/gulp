@@ -1,14 +1,15 @@
 import gulp from 'gulp'
 
 // Configs
-import { path } from './gulp/config/path.js'
+import { paths } from './gulp/config/paths.js'
 import { plugins } from './gulp/config/plugins.js'
+import { isScss } from './gulp/config/isScss.js'
 
 // Tasks
 import { copy } from './gulp/tasks/copy.js'
 import { html } from './gulp/tasks/html.js'
-import { css } from './gulp/tasks/css.js'
-import { js } from './gulp/tasks/js.js'
+import { styles } from './gulp/tasks/styles.js'
+import { scripts } from './gulp/tasks/scripts.js'
 import { images } from './gulp/tasks/images.js'
 import { reset } from './gulp/tasks/reset.js'
 import { watcher } from './gulp/tasks/watcher.js'
@@ -21,19 +22,11 @@ import {
 } from './gulp/tasks/fonts.js'
 import { zip } from './gulp/tasks/zip.js'
 
-global.app = { path, gulp, plugins }
+global.app = { gulp, paths, plugins, isScss }
 
-const processFonts = gulp.series(
-	convertToTtf,
-	convertToWoff,
-	copyWoffAndWoff2,
-	generateFontStyles
-)
+const processFonts = gulp.series(convertToTtf, convertToWoff, copyWoffAndWoff2, generateFontStyles)
 
-const mainTasks = gulp.series(
-	processFonts,
-	gulp.parallel(copy, html, css, js, images)
-)
+const mainTasks = gulp.series(processFonts, gulp.parallel(copy, html, styles, scripts, images))
 
 const dev = gulp.series(reset, mainTasks, gulp.parallel(watcher, server))
 const deployZIP = gulp.series(reset, mainTasks, zip)

@@ -4,9 +4,9 @@ import versionNumber from 'gulp-version-number'
 
 export const html = () =>
 	app.gulp
-		.src(app.path.src.html)
-		.pipe(pug({ pretty: true, doctype: 'html', basedir: app.path.srcFolder }))
-		.pipe(app.plugins.replace(/@img\//g, 'img/'))
+		.src(app.paths.src.html)
+		.pipe(app.plugins.newer(app.paths.dist.html))
+		.pipe(pug({ pretty: true, doctype: 'html', basedir: app.paths.srcFolder }))
 		.pipe(webpHtmlNosvg())
 		.pipe(
 			versionNumber({
@@ -18,5 +18,5 @@ export const html = () =>
 				},
 			})
 		)
-		.pipe(app.gulp.dest(app.path.build.html))
+		.pipe(app.gulp.dest(app.paths.dist.html))
 		.pipe(app.plugins.browsersync.stream())

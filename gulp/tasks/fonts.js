@@ -1,7 +1,6 @@
 import fs from 'fs'
 import path from 'path'
 import fonter from 'gulp-fonter'
-import rename from 'gulp-rename'
 import ttf2woff2 from 'gulp-ttf2woff2'
 
 const removeFontsPrefix = (fontPath) => fontPath.replace(/^fonts[\\/]/, '')
@@ -42,40 +41,40 @@ const writeFontFace = (fontsStylesFile, fontName, fontFileName, fontWeight) => {
 
 export const convertToTtf = () =>
 	app.gulp
-		.src(`${app.path.src.fonts}*.otf`)
+		.src(`${app.paths.src.fonts}*.otf`)
 		.pipe(fonter({ formats: ['ttf'] }))
 		.pipe(
-			rename((path) => {
+			app.plugins.rename((path) => {
 				path.dirname = '.'
 				path.basename = removeFontsPrefix(path.basename)
 			})
 		)
-		.pipe(app.gulp.dest(`${app.path.src.fonts}`))
+		.pipe(app.gulp.dest(`${app.paths.src.fonts}`))
 
 export const convertToWoff = () =>
 	app.gulp
-		.src(`${app.path.src.fonts}*.ttf`)
+		.src(`${app.paths.src.fonts}*.ttf`)
 		.pipe(fonter({ formats: ['woff'] }))
 		.pipe(
-			rename((path) => {
+			app.plugins.rename((path) => {
 				path.dirname = '.'
 				path.basename = removeFontsPrefix(path.basename)
 			})
 		)
-		.pipe(app.gulp.dest(`${app.path.src.fonts}`))
-		.pipe(app.gulp.src(`${app.path.src.fonts}*.ttf`))
+		.pipe(app.gulp.dest(`${app.paths.src.fonts}`))
+		.pipe(app.gulp.src(`${app.paths.src.fonts}*.ttf`))
 		.pipe(ttf2woff2())
-		.pipe(app.gulp.dest(`${app.path.src.fonts}`))
+		.pipe(app.gulp.dest(`${app.paths.src.fonts}`))
 
 export const copyWoffAndWoff2 = () =>
 	app.gulp
-		.src(`${app.path.src.fonts}*.{woff,woff2}`)
-		.pipe(app.gulp.dest(`${app.path.build.fonts}`))
+		.src(`${app.paths.src.fonts}*.{woff,woff2}`)
+		.pipe(app.gulp.dest(`${app.paths.dist.fonts}`))
 
 export const generateFontStyles = (done) => {
-	const fontsStylesFile = path.join(app.path.srcFolder, 'css', 'fonts.scss')
+	const fontsStylesFile = path.join(app.paths.srcFolder, 'css', 'fonts.scss')
 
-	fs.readdir(app.path.build.fonts, (err, fontFiles) => {
+	fs.readdir(app.paths.dist.fonts, (err, fontFiles) => {
 		if (err) {
 			console.error('Error reading fonts directory:', err)
 			done()

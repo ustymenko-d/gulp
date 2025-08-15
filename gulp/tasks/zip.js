@@ -1,11 +1,10 @@
-import { deleteAsync } from 'del'
-import zipPlugin from 'gulp-zip'
-
 export const zip = async () => {
-	await deleteAsync(`./${app.path.rootFolder}.zip`)
+	const { rootFolder, distFolder } = app.paths
+
+	await app.plugins.deleteAsync(`./${rootFolder}.zip`)
 
 	return app.gulp
-		.src(`${app.path.buildFolder}/**/*.*`, { base: app.path.buildFolder })
-		.pipe(zipPlugin(`${app.path.rootFolder}.zip`))
+		.src(`${distFolder}/**/*.*`, { base: distFolder })
+		.pipe(app.plugins.zipPlugin(`${rootFolder}.zip`))
 		.pipe(app.gulp.dest('./'))
 }
