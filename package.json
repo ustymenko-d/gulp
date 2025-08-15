@@ -1,6 +1,11 @@
 {
 	"main": "gulpfile.js",
 	"type": "module",
+	"author": {
+		"name": "Denys Ustymenko",
+		"email": "ustymenko.denys@gmail.com",
+		"url": "https://ustymenko.vercel.app"
+	},
 	"scripts": {
 		"zip": "gulp zip"
 	},
