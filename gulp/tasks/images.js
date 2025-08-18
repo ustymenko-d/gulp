@@ -25,5 +25,7 @@ export const images = () => {
 			])
 		)
 		.pipe(gulp.dest(paths.dist.images))
+		.pipe(app.gulp.src(paths.src.svg))
+		.pipe(app.gulp.dest(paths.dist.images))
 		.pipe(browsersync.stream())
 }
