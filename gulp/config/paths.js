@@ -21,7 +21,7 @@ export const paths = {
 		scripts: src('js',    'index.js'),
 		images:  src('img',   '**', '*.{jpg,jpeg,png,gif,webp}'),
 		svg:     src('img',   '**', '*.svg'),
-		fonts:   src('fonts', '**', '*.{woff,woff2,ttf,otf}'),
+		fonts:   src('fonts'),
 		files:   src('files', '**', '*.*'),
 	},
 
