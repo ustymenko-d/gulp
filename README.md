@@ -1,7 +1,7 @@
 # Gulp build setup
 
 This is a pre-configured Gulp setup for web projects. It includes automation tools for compiling
-Pug, SCSS, optimizing images, live browser reloading, and more.
+HTML, Pug, CSS, SCSS, optimizing images, live browser reloading, and more.
 
 ## Installation
 
@@ -41,12 +41,12 @@ stylesheet file — either .scss or .css.
 To start the Gulp tasks, run:
 
 ```bash
-gulp
+npm run dev
 ```
 
 This command will launch a local server, watch for file changes, and automatically reload the
 browser. To generate the final production build and package it into a .zip archive, use:
 
 ```bash
-gulp zip
+npm run build
 ```
