@@ -16,7 +16,7 @@ const watch = buildPath(srcFolder)
 // prettier-ignore
 export const paths = {
 	src: {
-		html:    src('*.pug'),
+		html:    src('*.{pug,html}'),
 		styles:  src('css',   'index.{scss,css}'),
 		scripts: src('js',    'index.js'),
 		images:  src('img',   '**', '*.{jpg,jpeg,png,gif,webp}'),
@@ -35,7 +35,7 @@ export const paths = {
 	},
 
 	watch: {
-		html:    watch('**', '*.pug'),
+		html:    watch('**', '*.{pug,html}'),
 		styles:  watch('css',   '**', '*.{scss,css}'),
 		scripts: watch('js',    '**', '*.js'),
 		images:  watch('img',   '**', '*.{jpg,jpeg,png,gif,webp,svg}'),

@@ -3,7 +3,7 @@ import gulp from 'gulp'
 // Configs
 import { paths } from './gulp/config/paths.js'
 import { plugins } from './gulp/config/plugins.js'
-import { isScss } from './gulp/config/isScss.js'
+import { isScss } from './gulp/utils/features.js'
 
 // Tasks
 import { copy } from './gulp/tasks/copy.js'

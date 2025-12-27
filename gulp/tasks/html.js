@@ -1,12 +1,20 @@
 import pug from 'gulp-pug'
 import webpHtmlNosvg from 'gulp-webp-html-nosvg'
 import versionNumber from 'gulp-version-number'
+import path from 'path'
 
-export const html = () =>
-	app.gulp
-		.src(app.paths.src.html)
+export const html = () => {
+	const pugFiles = app.gulp
+		.src(path.join(app.paths.srcFolder, '*.pug'), { allowEmpty: true })
 		.pipe(app.plugins.newer(app.paths.dist.html))
 		.pipe(pug({ pretty: true, doctype: 'html', basedir: app.paths.srcFolder }))
+
+	const htmlFiles = app.gulp
+		.src(path.join(app.paths.srcFolder, '*.html'), { allowEmpty: true })
+		.pipe(app.plugins.newer(app.paths.dist.html))
+
+	return app.plugins
+		.mergeStream(pugFiles, htmlFiles)
 		.pipe(webpHtmlNosvg())
 		.pipe(
 			versionNumber({
@@ -20,3 +28,4 @@ export const html = () =>
 		)
 		.pipe(app.gulp.dest(app.paths.dist.html))
 		.pipe(app.plugins.browsersync.stream())
+}
